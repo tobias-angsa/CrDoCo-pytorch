@@ -19,11 +19,11 @@ import model
 import discriminator
 import dataset
 
-SOURCE_DATA_DIR  = '/path/to/source/dataset/TODO'
-SOURCE_DATA_LIST = '/path/to/source/datalist/TODO'
+SOURCE_DATA_DIR  = '../../data/synth2real/train/synthetic'
+SOURCE_DATA_LIST = ''
 
-TARGET_DATA_DIR  = '/path/to/target/dataset/TODO'
-TARGET_DATA_LIST = '/path/to/target/datalist/TODO'
+TARGET_DATA_DIR  = '../../data/synth2real/train/real'
+TARGET_DATA_LIST = ''
 
 SOURCE_IMAGE_SIZE = '412,412'
 TARGET_IMAGE_SIZE = '412,412'
@@ -90,8 +90,8 @@ def main():
     netS_T = create_trans_model() 
     netT_S = create_trans_model() 
 
-    netS_T.load_state_dict("TODO")
-    netT_S.load_state_dict("TODO")
+    netS_T.load_state_dict("latest_net_G_A.pth")
+    netT_S.load_state_dict("latest_net_G_B.pth")
 
     netS_T.cuda(args.gpu)
     netT_S.cuda(args.gpu)
