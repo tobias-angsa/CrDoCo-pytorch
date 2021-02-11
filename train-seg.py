@@ -13,6 +13,8 @@ from torch.utils import data
 from seg.model.deeplabv2 import get_deeplab_v2
 from seg.dataset.gta5 import GTA5DataSet
 from seg.dataset.cityscapes import CityscapesDataSet
+from seg.dataset.synthetic_trash_dataset import SyntheticTrashDataset
+from seg.dataset.real_trash_dataset import RealTrashDataset
 
 from parser import get_arguments
 
@@ -77,12 +79,13 @@ def main():
     print('Model loaded')
 
     # DATALOADERS
-    source_dataset = GTA5DataSet(root=cfg.DATA_DIRECTORY_SOURCE,
+    source_dataset = SyntheticTrashDataset(root=cfg.DATA_DIRECTORY_SOURCE,
                                  list_path=cfg.DATA_LIST_SOURCE,
                                  set=cfg.TRAIN.SET_SOURCE,
                                  max_iters=cfg.TRAIN.MAX_ITERS * cfg.TRAIN.BATCH_SIZE_SOURCE,
                                  crop_size=cfg.TRAIN.INPUT_SIZE_SOURCE,
                                  mean=cfg.TRAIN.IMG_MEAN)
+
     source_loader = data.DataLoader(source_dataset,
                                     batch_size=cfg.TRAIN.BATCH_SIZE_SOURCE,
                                     num_workers=cfg.NUM_WORKERS,
@@ -90,13 +93,14 @@ def main():
                                     pin_memory=True,
                                     worker_init_fn=_init_fn)
 
-    target_dataset = CityscapesDataSet(root=cfg.DATA_DIRECTORY_TARGET,
+    target_dataset = RealTrashDataset(root=cfg.DATA_DIRECTORY_TARGET,
                                        list_path=cfg.DATA_LIST_TARGET,
                                        set=cfg.TRAIN.SET_TARGET,
                                        info_path=cfg.TRAIN.INFO_TARGET,
                                        max_iters=cfg.TRAIN.MAX_ITERS * cfg.TRAIN.BATCH_SIZE_TARGET,
                                        crop_size=cfg.TRAIN.INPUT_SIZE_TARGET,
                                        mean=cfg.TRAIN.IMG_MEAN)
+
     target_loader = data.DataLoader(target_dataset,
                                     batch_size=cfg.TRAIN.BATCH_SIZE_TARGET,
                                     num_workers=cfg.NUM_WORKERS,
